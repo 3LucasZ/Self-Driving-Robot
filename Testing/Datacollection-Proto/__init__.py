@@ -6,7 +6,7 @@ from flask_socketio import SocketIO
 
 #camera
 import cv2
-import base64
+import base64 
 
 
 #data collection

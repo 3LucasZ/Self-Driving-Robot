@@ -32,6 +32,8 @@ function motorsOn(){
 function motorsOff(){
     socket.emit('motorsOff');
 }
+//the larger the motor bias, left turn
+//the smaller the motor bias, right turn
 function turnLeft(){
     motorBias = Math.max(-20, motorBias - 2);
     socket.emit('motorBias', motorBias);

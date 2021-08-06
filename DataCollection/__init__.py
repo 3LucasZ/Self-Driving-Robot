@@ -162,20 +162,22 @@ def disconnect():
 
 @socketio.on('motorsOn')
 def motors_on():
-    GPIO.output(PIN_I2C6_POWER_ENABLE, GPIO.HIGH)
+    GPIO.output(PIN_I2C6_POWER_ENABLE, GPIO.HIGH) 
     print("motor on received")
 
 
 @socketio.on('motorsOff')
 def motors_off():
     GPIO.output(PIN_I2C6_POWER_ENABLE, GPIO.LOW)
-    print("motor off received")
+    print("motor off received") 
 
 
 @socketio.on('motorBias')
 def set_motor_bias(data):
     global motorBias
     motorBias = data
+    #the larger the motor bias, left turn
+    #the smaller the motor bias, right turn
     leftMotor = MOTOR_DEFAULT - motorBias
     rightMotor = MOTOR_DEFAULT + motorBias
     bus.write_i2c_block_data(DEVICE_ADDRESS,3,int_to_byte.int_to_byte_array(leftMotor))
