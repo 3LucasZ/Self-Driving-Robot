@@ -28,7 +28,7 @@ socketio = SocketIO(app)
 camera = cv2.VideoCapture(0)
 camera.set(3, 64)
 camera.set(4, 64)
-FPS = 5
+FPS = 15
 canRecord = False
 
 
@@ -43,15 +43,18 @@ datasetPath = os.path.join(pathlib.Path(__file__).parent.resolve(), "datasets/")
 #clear all the tubs (for debugging only)
 for oldTub in os.listdir(datasetPath):
     shutil.rmtree(os.path.join(datasetPath, oldTub))
-tubName = "tub" + str(int(time.time())) + "/"
+if os.listdir(datasetPath):
+    tubName = "tub" + str(int((os.listdir(datasetPath)[-1])[3:])+1) + "/"
+else:
+    tubName = "tub1"
 tubPath = os.path.join(datasetPath, tubName)
 imagesPath = os.path.join(tubPath, "Images/")
 biasFilePath = os.path.join(tubPath, "bias.txt")
+biasList = []
 
 #create the directories
 os.mkdir(tubPath)
 os.mkdir(imagesPath)
-
 #open bias file and allow writing data. If file already exists it is overridden.
 biasFile = open(biasFilePath, "w")
 
@@ -73,7 +76,7 @@ def stopRecord():
 @socketio.on('recordingSystem')
 def recording_system():
     framesTaken = 0
-    #get height and width of camera
+    #get camera info and print it
     retval, frame = camera.read()
     height = frame.shape[0]
     width = frame.shape[1]
@@ -82,26 +85,33 @@ def recording_system():
     print("cam px width:", width)
     print("cam channels:", channels)
     while True:
+        #take picture into frame
+        retval, frame = camera.read()
+        #crop the image
+        frame = frame[int(height/2)-32:int(height/2)+32, int(width/2)-32:int(width/2)+32]
+        #flip the image horiz and vert
+        #frame = cv2.flip(frame, -1)
+
         if canRecord:
             framesTaken += 1
-            #take picture into frame
-            retval, frame = camera.read()
-            #crop the image
-            #frame = frame[height-50:height, 0:width]
-            #save image into images
+            #save frame
             cv2.imwrite(imagesPath + "frame" + str(framesTaken) + ".jpg", frame)
-            #save current motor bias to bias.txt
-            biasFile.write(str(motorBias) + "\n")
-            #encode picture to jpg
-            retval, jpg = cv2.imencode('.jpg', frame)
-            #encode to base 64 string
-            jpg_as_text = str(base64.b64encode(jpg))
-            #remove b''
-            jpg_as_text = jpg_as_text[2:-1]
-            #emit text
-            socketio.emit('jpg_string', jpg_as_text)
+            #save current motor bias
+            biasList.append(motorBias)
+            #sanity checks
+            print("On frame: " + str(framesTaken))
+            print("BiasList elements: " + str(len(biasList)))
+
+        #encode picture to jpg
+        retval, jpg = cv2.imencode('.jpg', frame)
+        #encode to base 64 string
+        jpg_as_text = str(base64.b64encode(jpg))
+        #remove b''
+        jpg_as_text = jpg_as_text[2:-1]
+        #emit text
+        socketio.emit('jpg_string', jpg_as_text)
         #async sleep
-        socketio.sleep(1/FPS)    
+        socketio.sleep(1/FPS)     
         
 '''
 @socketio.on('startPracticing')
@@ -158,6 +168,10 @@ if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000)
     
 print("Closing program")
+#clean up
+#add biases to biasFile and close the file
+for e in biasList:
+    biasFile.write(str(e) + "\n")
 biasFile.close()
 #sanity check
 print("recorded motor values: " + os.popen("wc -l < " + biasFilePath).read().strip())

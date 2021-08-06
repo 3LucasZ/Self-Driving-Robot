@@ -1,0 +1,16 @@
+- Run: DataCollection -> __init__.py
+- Go to: <Raspberry Pi IP Address>:5000
+
+- Wait: until connected and livestream shows up
+- Click: start recording
+- Data: gets collected into a tub (the most recent tub has largest id)
+
+- Compress data: zip the tub with zip -r tub<id>.zip datasets/tub<id>
+- Get data locally: scp ubuntu@192.168.1.162:/<path>/tub<id>.zip $HOME/Desktop
+- Save data: Upload zipped tub to google drive 
+
+- Use data: On google colab replace tub id with new tub id
+- Run: all the lines on the google colab
+
+
+
