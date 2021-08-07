@@ -34,7 +34,7 @@ socketio = SocketIO(app)
 #motor setup
 if on_pi:
     PIN_I2C6_POWER_ENABLE = 17
-    bus = smbus.SMBus(3)
+    bus = smbus.SMBus(1)
     DEVICE_ADDRESS = 0x53
     GPIO.setmode(GPIO.BCM)
     time.sleep(0.1) #important
