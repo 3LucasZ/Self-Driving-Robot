@@ -1,4 +1,4 @@
-on_pi = False
+on_pi = True
 
 #IMPORTS
 #networking
