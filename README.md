@@ -15,4 +15,4 @@ Hardware:
 
 Software:
 - Python 3
-- All libraries used in requirements.txt
+- All libraries used are in requirements.txt

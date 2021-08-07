@@ -3,3 +3,4 @@ AutonomousRoboEnv
 .DS_Store
 tub*
 __pycache__
+start_server.sh

@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Prototype</title>
+        <title>Data Collection</title>
     </head>
     <body>
-        <h3>Livestream</h3>
-        <img id='livestream' width=50%>
-
-        <h3>Motor Control</h3>
         <div style="width: 100vw;">
+            <h1>Livestream</h1>
+            <img id='livestream' width=50%>
+        </div>
+        <div style="width: 100vw;">
+            <h1>Motor Control</h1>
             <button onclick="motorsOn()">Motor On</button>
             <button onclick="motorsOff()">Motor Off</button>
             <button onclick="turnLeft()" id="leftBtn">Turn Left</button>
             <button onclick="turnRight()" id="rightBtn">Turn Right</button>
             <button onclick="forward()" id="forwardBtn">Go forward (Bias reset)</button>
-            <h3>Motor Bias: <span id="biasDisplay"></span></h3>
         </div>
-
-        <h3>Status</h3>
         <div style="width: 100vw;">
+            <h1>Motor Status</h1>
+            <h3>Motor Bias: <span id="biasDisplay">0</span></h3>
+            <h3>Left Motor: <span id="leftMotorDisplay">20</span></h3>
+            <h3>Right Motor: <span id="rightMotorDisplay">20</span></h3>
+        </div>
+        <div style="width: 100vw;">
+            <h1>Recording Control</h1>
             <button onclick="startRecording()" id="startBtn">Start Recording</button>
             <button onclick="pauseRecording()" id="pauseBtn">Pause Recording</button>
         </div>

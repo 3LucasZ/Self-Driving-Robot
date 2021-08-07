@@ -1,3 +1,5 @@
+on_pi = False
+
 #IMPORTS
 #networking
 from flask import Flask,request, render_template
@@ -7,6 +9,13 @@ from flask_socketio import SocketIO, emit
 #livestream
 import cv2
 import base64
+
+
+if on_pi:
+    #motor control
+    import RPi.GPIO as GPIO
+    import smbus2 as smbus
+    import int_to_byte
 
 
 #ML model inference
@@ -21,23 +30,17 @@ import os
 #SETUP
 #paths
 currDir = os.path.dirname(os.path.abspath(__file__))
-imagePath = os.path.join(currDir, "frame1.jpg")
 modelPath = os.path.join(currDir, "model1.tflite")
 
 
-#image setup
-image = cv2.imread(imagePath)
-imageArr = np.float32(np.array(image)).reshape(1, 64, 64, 3)
-
-
-#interpreter set up
+#interpreter
 interpreter = tflite.Interpreter(model_path=modelPath)
 interpreter.allocate_tensors()
 #get input and output tensors.
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
-print(input_details)
-print(output_details)
+#print(input_details)
+#print(output_details)
 
 
 #app
@@ -50,14 +53,28 @@ socketio = SocketIO(app)
 camera = cv2.VideoCapture(0)
 camera.set(3, 64)
 camera.set(4, 64)
-FPS = 5
+FPS = 15
 canInference = False
 
 
 #motors
-MOTOR_DEFAULT = 50
+MOTOR_DEFAULT = 20
 motorBias = 0
-
+def set_motors(left, right, verbose=False):
+    if on_pi:
+        bus.write_i2c_block_data(DEVICE_ADDRESS,3,int_to_byte.int_to_byte_array(left))
+        bus.write_i2c_block_data(DEVICE_ADDRESS,4,int_to_byte.int_to_byte_array(right))
+    if verbose:
+        print("Left:", left)
+        print("Right:", right)
+def motors_on():
+    print("motor on received")
+    if on_pi:
+        GPIO.output(PIN_I2C6_POWER_ENABLE, GPIO.HIGH)
+def motors_off():
+    print("motor off received") 
+    if on_pi:
+        GPIO.output(PIN_I2C6_POWER_ENABLE, GPIO.LOW)
 
 #WEBSOCKET COMMUNICATIONS
 @socketio.on('connect')
@@ -68,21 +85,24 @@ def connect():
 @socketio.on('disconnect')
 def disconnect():
     print('A client disconnected.')
+    stop_inference()
 
 
 @socketio.on('startInference')
-def record():
+def start_inference():
+    print("Starting inference")
     global canInference
     canInference = True
-    print("Starting inference")
+    motors_on()
 
 
 @socketio.on('stopInference')
-def stopRecord():
+def stop_inference():
+    print("Inference stopped")
+    print("Motor stopped")
     global canInference
     canInference = False
-    print("Motors stopped")
-    print("Inference stopped")
+    motors_off()
 
 
 @socketio.on('livestreamSystem')
@@ -98,18 +118,22 @@ def livestream_system():
     while True:
         #take picture into frame
         retval, frame = camera.read()
-        #crop the image
-        frame = frame[int(height/2)-32:int(height/2)+32, int(width/2)-32:int(width/2)+32]
+        if not on_pi:
+            #crop the image
+            frame = frame[int(height/2)-32:int(height/2)+32, int(width/2)-32:int(width/2)+32]
+        if on_pi:
+            #flip image
+            frame = cv2.flip(frame, -1)
         if canInference:
             #INFERENCE
             to_predict = np.float32((frame / 255).reshape(1, 64, 64, 3))
             interpreter.set_tensor(input_details[0]['index'], to_predict)
             interpreter.invoke()
             tflite_results = interpreter.get_tensor(output_details[0]['index'])
-            motorBias = np.ndarray.item(tflite_results)
-            emit("bias",motorBias)
-            print(motorBias)
-           
+            motorBias = int(np.ndarray.item(tflite_results))
+            #print("bias:", motorBias)
+            set_motors(left=MOTOR_DEFAULT+motorBias, right=MOTOR_DEFAULT-motorBias)
+            emit("bias", motorBias)
             
         #encode picture to jpg
         retval, jpg = cv2.imencode('.jpg', frame)
