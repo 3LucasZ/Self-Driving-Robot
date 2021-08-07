@@ -44,8 +44,8 @@ MOTOR_DEFAULT = 20
 motorBias = 0
 def set_motors(left, right, verbose=False):
     if on_pi:
-        bus.write_i2c_block_data(DEVICE_ADDRESS,3,int_to_byte.int_to_byte_array(left))
-        bus.write_i2c_block_data(DEVICE_ADDRESS,4,int_to_byte.int_to_byte_array(right))
+        bus.write_i2c_block_data(DEVICE_ADDRESS,4,int_to_byte.int_to_byte_array(left))
+        bus.write_i2c_block_data(DEVICE_ADDRESS,3,int_to_byte.int_to_byte_array(right))
     if verbose:
         print("Left:", left)
         print("Right:", right)
