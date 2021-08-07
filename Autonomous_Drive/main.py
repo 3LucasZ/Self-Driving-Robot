@@ -1,4 +1,4 @@
-on_pi = False
+on_pi = True
 
 #IMPORTS
 #networking
@@ -75,6 +75,7 @@ def motors_off():
     print("motor off received") 
     if on_pi:
         GPIO.output(PIN_I2C6_POWER_ENABLE, GPIO.LOW)
+
 
 #WEBSOCKET COMMUNICATIONS
 @socketio.on('connect')
