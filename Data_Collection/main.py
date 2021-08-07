@@ -67,8 +67,8 @@ canRecord = False
 #path names
 datasetPath = os.path.join(pathlib.Path(__file__).parent.resolve(), "datasets/")
 #clear all the tubs (for debugging only)
-for oldTub in os.listdir(datasetPath):
-    shutil.rmtree(os.path.join(datasetPath, oldTub))
+#for oldTub in os.listdir(datasetPath):
+#    shutil.rmtree(os.path.join(datasetPath, oldTub))
 if os.listdir(datasetPath):
     max = 1
     for oldTub in os.listdir(datasetPath):
