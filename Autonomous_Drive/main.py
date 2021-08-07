@@ -25,6 +25,7 @@ import numpy as np
 
 #General purpose 
 import os
+import time
 
 
 #SETUP
