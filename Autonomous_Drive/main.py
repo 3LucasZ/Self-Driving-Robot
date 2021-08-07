@@ -1,4 +1,4 @@
-on_pi = True
+on_pi = False
 
 #IMPORTS
 #networking
@@ -83,6 +83,7 @@ def motors_on():
 def motors_off():
     print("motor off received") 
     if on_pi:
+        set_motors(0, 0)
         GPIO.output(PIN_I2C6_POWER_ENABLE, GPIO.LOW)
 
 
