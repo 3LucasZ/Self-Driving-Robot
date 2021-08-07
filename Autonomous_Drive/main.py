@@ -54,7 +54,7 @@ socketio = SocketIO(app)
 camera = cv2.VideoCapture(0)
 camera.set(3, 64)
 camera.set(4, 64)
-FPS = 15
+FPS = 8
 canInference = False
 
 
