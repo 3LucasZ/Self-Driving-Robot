@@ -60,6 +60,14 @@ canInference = False
 #motors
 MOTOR_DEFAULT = 20
 motorBias = 0
+if on_pi:
+    PIN_I2C6_POWER_ENABLE = 17
+    bus = smbus.SMBus(1)
+    DEVICE_ADDRESS = 0x53
+    GPIO.setmode(GPIO.BCM)
+    time.sleep(0.1) #important
+    GPIO.setup(PIN_I2C6_POWER_ENABLE, GPIO.OUT)
+    time.sleep(0.1) #important
 def set_motors(left, right, verbose=False):
     if on_pi:
         bus.write_i2c_block_data(DEVICE_ADDRESS,3,int_to_byte.int_to_byte_array(left))
