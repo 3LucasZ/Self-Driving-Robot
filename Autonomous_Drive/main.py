@@ -1,4 +1,7 @@
-on_pi = True
+#utils
+import Modules.utils as util
+config = util.get_config()
+on_pi = config['SERVER']['ON_PI']
 
 #IMPORTS
 #networking
@@ -11,11 +14,8 @@ import cv2
 import base64
 
 
-if on_pi:
-    #motor control
-    import RPi.GPIO as GPIO
-    import smbus2 as smbus
-    import int_to_byte
+#motors
+import Modules.motor_controller as motor
 
 
 #ML model inference
@@ -48,6 +48,8 @@ output_details = interpreter.get_output_details()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecret'
 socketio = SocketIO(app)
+HOST = config['SERVER']['HOST']
+PORT = config['SERVER']['PORT']
 
 
 #camera
@@ -59,32 +61,9 @@ canInference = False
 
 
 #motors
+motorController = motor.MotorController()
 MOTOR_DEFAULT = 20
 motorBias = 0
-if on_pi:
-    PIN_I2C6_POWER_ENABLE = 17
-    bus = smbus.SMBus(1)
-    DEVICE_ADDRESS = 0x53
-    GPIO.setmode(GPIO.BCM)
-    time.sleep(0.1) #important
-    GPIO.setup(PIN_I2C6_POWER_ENABLE, GPIO.OUT)
-    time.sleep(0.1) #important
-def set_motors(left, right, verbose=False):
-    if on_pi:
-        bus.write_i2c_block_data(DEVICE_ADDRESS,3,int_to_byte.int_to_byte_array(left))
-        bus.write_i2c_block_data(DEVICE_ADDRESS,4,int_to_byte.int_to_byte_array(right))
-    if verbose:
-        print("Left:", left)
-        print("Right:", right)
-def motors_on():
-    print("motor on received")
-    if on_pi:
-        GPIO.output(PIN_I2C6_POWER_ENABLE, GPIO.HIGH)
-def motors_off():
-    print("motor off received") 
-    if on_pi:
-        set_motors(0, 0)
-        GPIO.output(PIN_I2C6_POWER_ENABLE, GPIO.LOW)
 
 
 #WEBSOCKET COMMUNICATIONS
@@ -104,7 +83,7 @@ def start_inference():
     print("Starting inference")
     global canInference
     canInference = True
-    motors_on()
+    motorController.on()
 
 
 @socketio.on('stopInference')
@@ -113,7 +92,7 @@ def stop_inference():
     print("Motor stopped")
     global canInference
     canInference = False
-    motors_off()
+    motorController.off()
 
 
 @socketio.on('livestreamSystem')
@@ -143,7 +122,7 @@ def livestream_system():
             tflite_results = interpreter.get_tensor(output_details[0]['index'])
             motorBias = int(np.ndarray.item(tflite_results))
             #print("bias:", motorBias)
-            set_motors(left=MOTOR_DEFAULT+motorBias, right=MOTOR_DEFAULT-motorBias)
+            motorController.set_to(left=MOTOR_DEFAULT+motorBias, right=MOTOR_DEFAULT-motorBias)
             emit("bias", motorBias)
             
         #encode picture to jpg
@@ -167,8 +146,11 @@ def home():
 #RUN APP
 if __name__ == '__main__':
     print("Ready for clients.")
-    socketio.run(app, host='0.0.0.0', port=5000)
+    print('Running on <SERVER_IP>:' + str(PORT))
+    socketio.run(app, host=HOST, port=PORT)
     
     
 #CLEAN UP
+if on_pi:
+    GPIO.cleanup()
 print("Closing program")

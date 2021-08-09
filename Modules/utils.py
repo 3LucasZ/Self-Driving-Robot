@@ -1,4 +1,16 @@
+from pathlib import Path
+import yaml
 from textwrap import wrap
+
+ROOT_PATH = Path(__file__).parent.parent
+CONFIG_PATH = ROOT_PATH.joinpath('config.yaml')
+
+def get_root():
+    return ROOT_PATH
+
+def get_config():
+    return yaml.safe_load(open(CONFIG_PATH))
+
 def int_to_byte_array(num):
    if num < 0:
       hexStr = hex((1<<32) + num)
@@ -16,6 +28,3 @@ def int_to_byte_array(num):
    array.reverse()
 
    return array
-
-if __name__ == 'main':
-    print(int_to_byte_array(-100))
