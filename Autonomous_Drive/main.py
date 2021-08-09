@@ -1,7 +1,7 @@
 #utils
 import Modules.utils as util
 config = util.get_config()
-on_pi = config['SERVER']['ON_PI']
+on_pi = config['ON_PI']
 
 #IMPORTS
 #networking
