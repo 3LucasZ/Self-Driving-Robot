@@ -9,9 +9,8 @@ from flask import Flask,request, render_template
 from flask_socketio import SocketIO, emit
 
 
-#livestream
-import cv2
-import base64
+#camera
+import Modules.camera as cam
 
 
 #motors
@@ -53,9 +52,8 @@ PORT = config['SERVER']['PORT']
 
 
 #camera
-camera = cv2.VideoCapture(0)
-camera.set(3, 64)
-camera.set(4, 64)
+#camera setup
+camera = cam.Camera()
 FPS = 8
 canInference = False
 
@@ -106,14 +104,7 @@ def livestream_system():
     print("cam px width:", width)
     print("cam channels:", channels)
     while True:
-        #take picture into frame
-        retval, frame = camera.read()
-        if not on_pi:
-            #crop the image
-            frame = frame[int(height/2)-32:int(height/2)+32, int(width/2)-32:int(width/2)+32]
-        if on_pi:
-            #flip image
-            frame = cv2.flip(frame, -1)
+        frame, encodedFrame = camera.take_picture()
         if canInference:
             #INFERENCE
             to_predict = np.float32((frame / 255).reshape(1, 64, 64, 3))
@@ -124,15 +115,7 @@ def livestream_system():
             #print("bias:", motorBias)
             motorController.set_to(left=MOTOR_DEFAULT+motorBias, right=MOTOR_DEFAULT-motorBias)
             emit("bias", motorBias)
-            
-        #encode picture to jpg
-        retval, jpg = cv2.imencode('.jpg', frame)
-        #encode to base 64 string
-        jpg_as_text = str(base64.b64encode(jpg))
-        #remove b''
-        jpg_as_text = jpg_as_text[2:-1]
-        #emit text
-        socketio.emit('jpg_string', jpg_as_text)
+        socketio.emit('jpg_string', encodedFrame)
         #async sleep
         socketio.sleep(1/FPS)    
 
