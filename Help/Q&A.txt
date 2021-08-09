@@ -1,0 +1,5 @@
+Q&A
+- Q: ModuleNotFoundError: No module named 'Modules'
+- A: On terminal run: source setup.sh from the project root directory before running anything
+- Q: How to install the needed libraries?
+- A: It is recommended to use a virtual environment to install the libraries. Once in a venv, run: pip3 install -r requirements.txt.

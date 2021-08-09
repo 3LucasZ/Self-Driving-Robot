@@ -6,6 +6,7 @@ on_pi = config['ON_PI']
 if on_pi:
     import RPi.GPIO as GPIO
     import smbus2 as smbus
+import time
 
 class MotorController:
     def __init__(self):
