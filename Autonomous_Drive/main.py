@@ -80,8 +80,8 @@ def disconnect():
 def start_inference():
     print("Starting inference")
     global canInference
-    canInference = True
     motorController.on()
+    canInference = True
 
 
 @socketio.on('stopInference')
@@ -89,8 +89,8 @@ def stop_inference():
     print("Inference stopped")
     print("Motor stopped")
     global canInference
-    canInference = False
     motorController.off()
+    canInference = False
 
 
 @socketio.on('livestreamSystem')
