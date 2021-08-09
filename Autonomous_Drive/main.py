@@ -95,14 +95,6 @@ def stop_inference():
 
 @socketio.on('livestreamSystem')
 def livestream_system():
-    #print and get some camera data
-    retval, frame = camera.read()
-    height = frame.shape[0]
-    width = frame.shape[1]
-    channels = frame.shape[2]
-    print("cam px height:", height)
-    print("cam px width:", width)
-    print("cam channels:", channels)
     while True:
         frame, encodedFrame = camera.take_picture()
         if canInference:
