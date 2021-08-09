@@ -15,7 +15,7 @@ class MotorController:
             self.BUS = smbus.SMBus(config['MOTOR_DRIVER']['I2C_ID'])
             self.DEVICE_ADDRESS = config['MOTOR_DRIVER']['ADDRESS']
             self.LEFT_MOTOR = config['MOTOR_DRIVER']['MOTORS']['LEFT']
-            self.RIGHT_MOTOR = config['MOTOR_DRIVER']['MOTORS']['RIGHT']x
+            self.RIGHT_MOTOR = config['MOTOR_DRIVER']['MOTORS']['RIGHT']
         if on_pi:
             GPIO.setmode(GPIO.BCM)
             time.sleep(0.1)
