@@ -4,4 +4,3 @@ AutonomousRoboEnv
 tub*
 __pycache__
 start_server.sh
-config.yaml
