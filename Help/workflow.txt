@@ -5,8 +5,8 @@ COLLECT DATA
 - Click: start recording
 - Drive: left/up/right arrow keys and buttons to drive robot
 - Data: gets collected into a tub (the most recent tub has largest id)
-- Compress data: zip the tub with zip -r tub<id>.zip datasets/tub<id>
-- Get data locally: scp ubuntu@192.168.1.162:/<path>/tub<id>.zip $HOME/Desktop
+- Compress data: zip the tub with zip -r tub<id>.zip tub<id>
+- Get data locally: scp pi@192.168.1.162:/home/pi/Projects/Self-Driving-Robot/Data_Collection/datasets/tub<id>.zip $HOME/Desktop
 - Save data: Upload zipped tub to google drive 
 
 TRAIN MODEL

@@ -31,7 +31,7 @@ import time
 #SETUP
 #paths
 currDir = os.path.dirname(os.path.abspath(__file__))
-modelPath = os.path.join(currDir, "model1.tflite")
+modelPath = os.path.join(currDir, "model17.tflite")
 
 
 #interpreter

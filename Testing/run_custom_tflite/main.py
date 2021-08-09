@@ -7,7 +7,7 @@ import cv2
 #paths
 currDir = os.path.dirname(os.path.abspath(__file__))
 imagePath = os.path.join(currDir, "frame1.jpg")
-modelPath = os.path.join(currDir, "model1.tflite")
+modelPath = os.path.join(currDir, "model17.tflite")
 
 #image setup
 image = cv2.imread(imagePath)

@@ -1,0 +1,1 @@
+Camera FOV with lego setup: 10cm x 10cm
