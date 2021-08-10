@@ -41,3 +41,6 @@ class MotorController:
         if verbose:
             print("Left:", left)
             print("Right:", right)
+    
+    def stop():
+        self.set_to(0, 0)

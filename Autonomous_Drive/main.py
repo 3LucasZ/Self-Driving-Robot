@@ -67,6 +67,7 @@ motorBias = 0
 #WEBSOCKET COMMUNICATIONS
 @socketio.on('connect')
 def connect():
+    motorController.on()
     print('A client connected.')
 
 
@@ -79,17 +80,18 @@ def disconnect():
 @socketio.on('startInference')
 def start_inference():
     print("Starting inference")
-    global canInference
+    print("Motors on")
     motorController.on()
+    global canInference
     canInference = True
 
 
 @socketio.on('stopInference')
 def stop_inference():
     print("Inference stopped")
-    print("Motor stopped")
+    print("Motors stopped")
+    motorController.stop()
     global canInference
-    motorController.off()
     canInference = False
 
 
