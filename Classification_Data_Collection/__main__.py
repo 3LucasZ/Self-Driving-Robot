@@ -49,7 +49,8 @@ canRecord = False
 FPS = 8
 
 # dataset setup
-dataset = data.Dataset(name='debugTub', debug=True)
+datasetName = input("Enter dataset name: ")
+dataset = data.Dataset(name=datasetName, debug=True)
 labelsList = []
 
 
