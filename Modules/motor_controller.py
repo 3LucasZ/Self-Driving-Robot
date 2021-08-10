@@ -1,12 +1,13 @@
 import Modules.utils as util
 config = util.get_config()
-
 on_pi = config['ON_PI']
+
 
 if on_pi:
     import RPi.GPIO as GPIO
     import smbus2 as smbus
 import time
+
 
 class MotorController:
     def __init__(self):
@@ -42,5 +43,26 @@ class MotorController:
             print("Left:", left)
             print("Right:", right)
     
+
     def stop(self):
         self.set_to(0, 0)
+
+
+    def forward(self, speed):
+        self.set_to(left=speed, right=speed)
+    
+
+    def backward(self, speed):
+        self.set_to(left=speed, right=speed)
+
+
+    def left_pivot(self, speed):
+        self.set_to(left=-1*speed, right=speed)
+
+
+    def right_pivot(self, speed):
+        self.set_to(left=speed, right=-1*speed)
+
+
+    def set_bias(self, bias, regular):
+        self.set_to(left=regular+bias, right=regular-bias)

@@ -1,6 +1,6 @@
 .vscode
 AutonomousRoboEnv
 .DS_Store
-tub*
+debug*
 __pycache__
 start_server.sh

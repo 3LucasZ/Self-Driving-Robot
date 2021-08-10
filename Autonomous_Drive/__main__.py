@@ -18,8 +18,7 @@ import Modules.motor_controller as motor
 
 
 #ML model inference
-import tflite_runtime.interpreter as tflite
-import numpy as np
+import Modules.inference as inference
 
 
 #General purpose 
@@ -28,27 +27,11 @@ import time
 
 
 #SETUP
-#paths
-currDir = os.path.dirname(os.path.abspath(__file__))
-modelPath = os.path.join(currDir, "model17.tflite")
 
 
-#interpreter
-interpreter = tflite.Interpreter(model_path=modelPath)
-interpreter.allocate_tensors()
-#get input and output tensors.
-input_details = interpreter.get_input_details()
-output_details = interpreter.get_output_details()
-#print(input_details)
-#print(output_details)
-
-
-#app
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'mysecret'
-socketio = SocketIO(app)
-HOST = config['SERVER']['HOST']
-PORT = config['SERVER']['PORT']
+#tflite model
+modelName = 'model17.tflite'
+model = inference.TfliteModel(modelName)
 
 
 #camera
@@ -62,6 +45,14 @@ canInference = False
 motorController = motor.MotorController()
 MOTOR_DEFAULT = 20
 motorBias = 0
+
+
+#app
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'mysecret'
+socketio = SocketIO(app)
+HOST = config['SERVER']['HOST']
+PORT = config['SERVER']['PORT']
 
 
 #WEBSOCKET COMMUNICATIONS
@@ -100,13 +91,7 @@ def livestream_system():
     while True:
         frame, encodedFrame = camera.take_picture()
         if canInference:
-            #INFERENCE
-            to_predict = np.float32((frame / 255).reshape(1, 64, 64, 3))
-            interpreter.set_tensor(input_details[0]['index'], to_predict)
-            interpreter.invoke()
-            tflite_results = interpreter.get_tensor(output_details[0]['index'])
-            motorBias = int(np.ndarray.item(tflite_results))
-            #print("bias:", motorBias)
+            motorBias = model.predict(frame)
             motorController.set_to(left=MOTOR_DEFAULT+motorBias, right=MOTOR_DEFAULT-motorBias)
             emit("bias", motorBias)
         socketio.emit('jpg_string', encodedFrame)

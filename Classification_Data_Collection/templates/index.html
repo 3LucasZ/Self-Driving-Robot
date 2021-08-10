@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Data Collection</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <!-- Custom CSS-->
+        <link rel="stylesheet" href="static/mainstyle.css">
+    </head>
+    <body>
+        <div class='row'>
+        <div class='col-6'>
+            <h1>Livestream</h1>
+            <img id='livestream' width=100%>
+        </div>
+        <div class='col-6'>
+            <div>
+                <h1>Motor Control</h1>
+                <button onclick="turnLeft()" id="leftBtn">Turn Left</button>
+                <button onclick="forward()" id="forwardBtn">Go forward</button>
+                <button onclick="turnRight()" id="rightBtn">Turn Right</button>
+            </div>
+            <div>
+                <h1>Motor Status</h1>
+                <h3>Motor Direction: <span id="directionDisplay">N/A</span></h3>
+            </div>
+            <div>
+                <h1>Recording Control</h1>
+                <button onclick="startRecording()" id="startBtn">Start Recording</button>
+                <button onclick="pauseRecording()" id="pauseBtn">Pause Recording</button>
+            </div>
+        </div>
+        </div>
+    </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+    <script src="static/classification_ws.js"></script>
+    <script src="static/keypress_handler.js"></script>
+</html>

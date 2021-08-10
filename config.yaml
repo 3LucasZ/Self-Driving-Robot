@@ -1,4 +1,4 @@
-ON_PI: True
+ON_PI: False
 
 SERVER:
   HOST: 0.0.0.0

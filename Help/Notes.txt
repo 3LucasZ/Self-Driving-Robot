@@ -1,1 +1,3 @@
 Camera FOV with lego setup: 10cm x 10cm
+Tub 17: 8k turn right data
+TODO: Tub 18: 8k turn left data
