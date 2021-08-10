@@ -42,5 +42,5 @@ class MotorController:
             print("Left:", left)
             print("Right:", right)
     
-    def stop():
+    def stop(self):
         self.set_to(0, 0)
