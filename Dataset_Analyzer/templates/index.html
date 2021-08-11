@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="Self-Driving-Robot/static/mainstyle.css">
 </head>
 <body>
+    <h1 class='center-text'>Dataset: {{datasetName}}</h1>
     <img id='frameDisplay' style='height: 50vh; display: block; margin-left: auto; margin-right: auto;'>
 
     <h1 class='center-text'>Label: <span id='labelDisplay'></span></h1>
@@ -16,7 +17,7 @@
 
     <input type="range" min="1" max='{{maxFrames}}' value="1" id="frameSlider" class='slider'>
     <div class='center-div'>
-        <button onclick="toggleAutoPlay()" class='btn btn-outline-warning small-square-button'><img src='Self-Driving-Robot/static/images/Right.PNG' class='full-width'></button>
+        <button onclick="toggleAutoPlay()" class='small-square-button no-padding'><img src='Self-Driving-Robot/static/images/Right.PNG' class='full-width'></button>
     </div>
 </body>
 <script>
