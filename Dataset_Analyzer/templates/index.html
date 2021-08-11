@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dataset Analyzer</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Custom CSS-->
+    <link rel="stylesheet" href="Self-Driving-Robot/static/mainstyle.css">
+</head>
+<body>
+    <img id='frameDisplay' style='height: 50vh; display: block; margin-left: auto; margin-right: auto;'>
+
+    <h1 class='center-text'>Label: <span id='labelDisplay'></span></h1>
+
+    <h3 class='center-text'>On frame: <span id='frameNumDisplay'></span></h3>
+
+    <input type="range" min="1" max='{{maxFrames}}' value="1" id="frameSlider" class='slider'>
+    <div class='center-div'>
+        <button onclick="toggleAutoPlay()" class='btn btn-outline-warning small-square-button'><img src='Self-Driving-Robot/static/images/Right.PNG' class='full-width'></button>
+    </div>
+</body>
+<script>
+//setup
+var frameDisplay = document.getElementById("frameDisplay");
+var labelDisplay = document.getElementById("labelDisplay");
+var frameNumDisplay = document.getElementById('frameNumDisplay');
+var frameSlider = document.getElementById("frameSlider");
+
+const labelsList = JSON.parse('{{labelsList}}');
+const FPS = 8;
+var isAutoPlaying = false;
+var maxFrames = parseInt('{{maxFrames}}');
+
+function display_frame(num) {
+    frameDisplay.src = 'Self-Driving-Robot/Datasets/{{datasetName}}/Images/frame'+num+'.jpg';
+}
+function display_label(num) {
+    labelDisplay.innerText = labelsList[num-1];
+}
+function display_frame_num(num) {
+    frameNumDisplay.innerText = num;
+}
+function update() {
+    display_frame(frameSlider.value);
+    display_label(frameSlider.value);
+    display_frame_num(frameSlider.value);
+}
+
+update();
+frameSlider.oninput = function() {
+    update();
+}
+frameSlider.onchange = function() {
+    update();
+}
+
+function toggleAutoPlay() {
+    isAutoPlaying = !isAutoPlaying;
+}
+function autoPlay() {
+    if (isAutoPlaying) {
+        frameSlider.value = parseInt(frameSlider.value) + 1;
+        update();
+    }
+}
+setInterval(autoPlay, 1000/FPS);
+</script>
+</html>
