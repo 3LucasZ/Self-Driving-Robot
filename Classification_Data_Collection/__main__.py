@@ -72,25 +72,26 @@ def stop_record():
     print("Stopping motors")
     print("Recording paused")
 
-
+recordingStarted = False
 @socketio.on('recordingSystem') 
 def recording_system():
-    framesTaken = 0
-    while True:
-        frame, encodedFrame = camera.take_picture()
-        if canRecord:
-            framesTaken += 1
-            dataset.saveImage(image=frame, imageName='frame'+str(framesTaken)+'.jpg')
-            #save current motor label
-            labelsList.append(directionID)
-            #sanity checks
-            print("On frame: " + str(framesTaken))
-            print("labels list elements: " + str(len(labelsList)))
-        #emit text
-        socketio.emit('jpg_string', encodedFrame)
-        #async sleep
-        socketio.sleep(1/FPS)  
-
+    if not recordingStarted:
+        recordingStarted = True
+        framesTaken = 0
+        while True:
+            frame, encodedFrame = camera.take_picture()
+            if canRecord:
+                framesTaken += 1
+                dataset.saveImage(image=frame, imageName='frame'+str(framesTaken)+'.jpg')
+                #save current motor label
+                labelsList.append(directionID)
+                #sanity checks
+                print("On frame: " + str(framesTaken))
+                print("labels list elements: " + str(len(labelsList)))
+            #emit text
+            socketio.emit('jpg_string', encodedFrame)
+            #async sleep
+            socketio.sleep(1/FPS)  
 
 @socketio.on('connect')
 def connect():
