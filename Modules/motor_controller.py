@@ -37,8 +37,8 @@ class MotorController:
 
     def set_to(self, left, right, verbose=False):
         if on_pi:
-            self.BUS.write_i2c_block_data(self.DEVICE_ADDRESS,self.LEFT_MOTOR,util.int_to_byte_array(left))
-            self.BUS.write_i2c_block_data(self.DEVICE_ADDRESS,self.RIGHT_MOTOR,util.int_to_byte_array(right))
+            self.BUS.write_i2c_block_data(self.DEVICE_ADDRESS,self.LEFT_MOTOR,util.int_to_byte_array(-1*left))
+            self.BUS.write_i2c_block_data(self.DEVICE_ADDRESS,self.RIGHT_MOTOR,util.int_to_byte_array(-1*right))
         if verbose:
             print("Left:", left)
             print("Right:", right)
