@@ -50,7 +50,7 @@ FPS = 8
 
 # dataset setup
 datasetName = input("Enter dataset name: ")
-dataset = data.Dataset(name=datasetName, debug=True)
+dataset = data.Dataset(name=datasetName, debug=False)
 labelsList = []
 
 
