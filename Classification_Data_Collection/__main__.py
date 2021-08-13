@@ -77,6 +77,7 @@ def stop_record():
 recordingStarted = False
 @socketio.on('recordingSystem') 
 def recording_system():
+    global recordingStarted
     if not recordingStarted:
         recordingStarted = True
         framesTaken = 0
