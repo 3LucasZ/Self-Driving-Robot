@@ -18,6 +18,5 @@ for dataset in sys.argv[1:]:
     os.chdir(DATASETS_PATH)
     cmd = 'zip -r '+ZIPPED_PATH+' '+DATASET_NAME
     os.system(cmd)
-    os.chdir(DATASETS_PATH)
 
 print("Finished")
