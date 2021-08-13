@@ -72,6 +72,8 @@ def stop_record():
     print("Stopping motors")
     print("Recording paused")
 
+
+#make sure recordingSystem is started once only during the program's lifetime
 recordingStarted = False
 @socketio.on('recordingSystem') 
 def recording_system():
