@@ -3,10 +3,10 @@ import os
 import sys
 
 DATASETS_PATH = os.path.join(utils.get_root(), 'Datasets')
-NUM_DATASETS = len(sys.argv)
+NUM_DATASETS = len(sys.argv) - 1
 print("Zipping", NUM_DATASETS, "datasets...")
-for i in range(1, len(sys.argv)):
-    DATASET_NAME = os.path.basename(sys.argv[i])
+for i in range(NUM_DATASETS):
+    DATASET_NAME = os.path.basename(sys.argv[i - 1])
     DATASET_PATH = os.path.join(DATASETS_PATH, DATASET_NAME)
     ZIPPED_PATH = DATASET_PATH+'.zip'
 
