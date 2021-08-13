@@ -3,11 +3,14 @@ import os
 import sys
 
 DATASETS_PATH = os.path.join(utils.get_root(), 'Datasets')
+NUM_DATASETS = len(sys.argv)
+print("Zipping", NUM_DATASETS, "datasets...")
 for i in range(1, len(sys.argv)):
     DATASET_NAME = os.path.basename(sys.argv[i])
     DATASET_PATH = os.path.join(DATASETS_PATH, DATASET_NAME)
     ZIPPED_PATH = DATASET_PATH+'.zip'
 
+    print("Zipping:", DATASET_NAME, "to", ZIPPED_PATH)
     os.chdir(DATASET_PATH)
     cmd = 'zip -r '+ZIPPED_PATH+' .'
     os.system(cmd)
