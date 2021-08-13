@@ -10,3 +10,4 @@ ZIPPED_PATH = DATASET_PATH+'.zip'
 os.chdir(DATASET_PATH)
 cmd = 'zip -r '+ZIPPED_PATH+' .'
 os.system(cmd)
+os.chdir(utils.get_root())
