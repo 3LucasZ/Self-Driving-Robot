@@ -7,6 +7,6 @@ DATASET_NAME = os.path.basename(sys.argv[1])
 DATASET_PATH = os.path.join(DATASETS_PATH, DATASET_NAME)
 ZIPPED_PATH = DATASET_PATH+'.zip'
 
-#zip whole folder
-cmd = 'zip -r '+ZIPPED_PATH+' '+DATASET_PATH
+os.chdir(DATASET_PATH)
+cmd = 'zip -r '+ZIPPED_PATH+' .'
 os.system(cmd)

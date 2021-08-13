@@ -14,7 +14,7 @@ ANALYZE DATA
 
 SEND DATA
 - Compress data: run python3 zip_dataset.py <dataset name>
-- Get data locally: run on computer: scp pi@192.168.1.162:/home/pi/Projects/Self-Driving-Robot/Data_Collection/datasets/tub<id>.zip $HOME/Desktop
+- Get data locally: sample run on computer: scp pi@192.168.1.191:/home/pi/Projects/Self-Driving-Robot/Datasets/ClassTrackLeft.zip $HOME/Desktop/RoverDatasets
 - Save data: Upload zipped tub to google drive 
 
 TRAIN MODEL
