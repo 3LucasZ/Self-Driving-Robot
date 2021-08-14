@@ -32,7 +32,7 @@ model = inference.TfliteModel(modelName, mode)
 #camera
 #camera setup
 camera = cam.Camera()
-FPS = 1
+FPS = 2
 canInference = False
 
 
@@ -43,7 +43,7 @@ if mode == 'regression':
     motorBias = 0
 elif mode == 'classification':
     FORWARD_SPEED = 20
-    PIVOT_SPEED = 20
+    PIVOT_SPEED = 60
 else:
     print("Error")
 
