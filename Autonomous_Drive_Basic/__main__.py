@@ -32,7 +32,7 @@ model = inference.TfliteModel(modelName, mode)
 #camera
 #camera setup
 camera = cam.Camera()
-FPS = 8
+FPS = 1
 canInference = False
 
 
