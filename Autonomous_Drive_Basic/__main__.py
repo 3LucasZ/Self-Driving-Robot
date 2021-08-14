@@ -57,11 +57,11 @@ while True:
     elif mode == 'classification':
         prediction = model.predict(frame)
         print(prediction)
-        if prediction == 1:
+        if prediction == 0:
             motorController.left_pivot(PIVOT_SPEED)
-        elif prediction == 2:
+        elif prediction == 1:
             motorController.forward(FORWARD_SPEED)
-        elif prediction == 3:
+        elif prediction == 2:
             motorController.right_pivot(PIVOT_SPEED)
     else:
         print("Error")
