@@ -41,6 +41,7 @@ class MotorController:
                 self.BUS.write_i2c_block_data(self.DEVICE_ADDRESS,self.LEFT_MOTOR,util.int_to_byte_array(-1*left))
                 self.BUS.write_i2c_block_data(self.DEVICE_ADDRESS,self.RIGHT_MOTOR,util.int_to_byte_array(-1*right))
             except:
+                print("error, motor reboot")
                 self.on()
         if verbose:
             print("Left:", left)

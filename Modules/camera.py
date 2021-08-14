@@ -11,8 +11,8 @@ class Camera:
         self.camera = cv2.VideoCapture(0)
 
         #changing these might break the camera!!
-        self.camera.set(3, 64)
-        self.camera.set(4, 64)
+        self.camera.set(3, config['CAMERA']['WIDTH']])
+        self.camera.set(4, config['CAMERA']['HEIGHT'])
 
         #get camera info and print it
         _, frame = self.camera.read()
@@ -34,7 +34,8 @@ class Camera:
         if on_pi:
             #flip the image horiz and vert
             frame = cv2.flip(frame, -1)
-
+        #crop the image to 16 x 64
+        frame = frame[0:15, :]
         #encode frame to jpg
         retval, encodedFrame = cv2.imencode('.jpg', frame)
         #encode to base 64 string

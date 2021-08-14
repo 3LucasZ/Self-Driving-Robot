@@ -114,7 +114,7 @@ def livestream_system():
                         motorController.right_pivot(PIVOT_SPEED)
                 else:
                     print("Error")
-                socketio.emit("prediction", prediction)
+                #socketio.emit("prediction", prediction)
             socketio.emit('jpg_string', encodedFrame)
             #async sleep
             socketio.sleep(1/FPS)    
