@@ -47,24 +47,25 @@ elif mode == 'classification':
 else:
     print("Error")
 
-while True:
-    frame, _ = camera.take_picture()
+try:
+    while True:
+        frame, _ = camera.take_picture()
 
-    if mode == 'regression':
-        prediction = model.predict(frame)
-        print(prediction)
-        motorController.set_to(left=MOTOR_DEFAULT+prediction, right=MOTOR_DEFAULT-prediction)
-    elif mode == 'classification':
-        prediction = model.predict(frame)
-        print(prediction)
-        if prediction == 0:
-            motorController.left_pivot(PIVOT_SPEED)
-        elif prediction == 1:
-            motorController.forward(FORWARD_SPEED)
-        elif prediction == 2:
-            motorController.right_pivot(PIVOT_SPEED)
-    else:
-        print("Error")
-    time.sleep(1/FPS)
-
-motorController.stop()
+        if mode == 'regression':
+            prediction = model.predict(frame)
+            print(prediction)
+            motorController.set_to(left=MOTOR_DEFAULT+prediction, right=MOTOR_DEFAULT-prediction)
+        elif mode == 'classification':
+            prediction = model.predict(frame)
+            print(prediction)
+            if prediction == 0:
+                motorController.left_pivot(PIVOT_SPEED)
+            elif prediction == 1:
+                motorController.forward(FORWARD_SPEED)
+            elif prediction == 2:
+                motorController.right_pivot(PIVOT_SPEED)
+        else:
+            print("Error")
+        time.sleep(1/FPS)
+except KeyboardInterrupt:
+    motorController.stop()
