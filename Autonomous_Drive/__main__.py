@@ -30,7 +30,7 @@ import time
 #SETUP
 #tflite model
 modelName = 'ClassTrackLeftRight.tflite'
-model = inference.TfliteModel(modelName)
+model = inference.TfliteModel(modelName, mode)
 mode = 'classification'
 
 
@@ -105,7 +105,7 @@ def livestream_system():
                     motorBias = model.predict(frame)
                     motorController.set_to(left=MOTOR_DEFAULT+motorBias, right=MOTOR_DEFAULT-motorBias)
                 elif mode == 'classification':
-                    directionID = np.argmax(model.predict(frame))
+                    directionID = model.predict(frame)
                     if directionID == 1:
                         motorController.left_pivot(PIVOT_SPEED)
                     elif directionID == 2:
