@@ -89,6 +89,7 @@ def recording_system():
                 dataset.saveImage(image=frame, imageName='frame'+str(framesTaken)+'.jpg')
                 #save current motor label
                 labelsList.append(directionID)
+                print("recorded:",directionID)
                 #sanity checks
                 print("On frame: " + str(framesTaken))
                 print("labels list elements: " + str(len(labelsList)))
