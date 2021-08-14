@@ -24,7 +24,7 @@ import time
 
 #SETUP
 #tflite model
-modelName = 'CircuitLaunch4.tflite'
+modelName = 'CircuitLaunch1.tflite'
 mode = 'classification'
 model = inference.TfliteModel(modelName, mode)
 
@@ -32,7 +32,7 @@ model = inference.TfliteModel(modelName, mode)
 #camera
 #camera setup
 camera = cam.Camera()
-FPS = 2
+FPS = 4
 canInference = False
 
 
@@ -42,8 +42,8 @@ if mode == 'regression':
     MOTOR_DEFAULT = 20
     motorBias = 0
 elif mode == 'classification':
-    FORWARD_SPEED = 45
-    PIVOT_SPEED = 45
+    FORWARD_SPEED = 200
+    PIVOT_SPEED = 15
 else:
     print("Error")
 
