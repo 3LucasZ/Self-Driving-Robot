@@ -100,9 +100,7 @@ def livestream_system():
         livestreamRunning = True
         while True:
             frame, encodedFrame = camera.take_picture()
-            if canInference:
-                #frame shape should be: (1, 32, 64, 3)
-                frame = frame[0:32, :, :]
+            if canInference: 
                 if mode == 'regression':
                     motorBias = model.predict(frame)
                     motorController.set_to(left=MOTOR_DEFAULT+motorBias, right=MOTOR_DEFAULT-motorBias)

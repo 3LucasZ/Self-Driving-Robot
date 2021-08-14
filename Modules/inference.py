@@ -17,7 +17,9 @@ class TfliteModel():
             print(self.output_details)
 
     def predict(self, image):
-        processedImage = np.float32((image / 255).reshape(1, 64, 64, 3))
+        #frame shape should be: (1, 32, 64, 3)
+        image = image[0:32, :, :]
+        processedImage = np.float32((image / 255).reshape(1, 32, 64, 3))
         self.interpreter.set_tensor(self.input_details[0]['index'], processedImage)
         self.interpreter.invoke()
         tflite_results = self.interpreter.get_tensor(self.output_details[0]['index'])
