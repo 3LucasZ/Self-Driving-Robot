@@ -26,15 +26,15 @@ function pauseRecording() {
     socket.emit('pauseRecording');
 }
 function turnLeft(){
-    direction = 1;
+    direction = 0;
     directionUpdate(direction);
 }
 function forward(){
-    direction = 2;
+    direction = 1;
     directionUpdate(direction);
 }
 function turnRight(){
-    direction = 3;
+    direction = 2;
     directionUpdate(direction);
 }
 function directionUpdate(direction) {

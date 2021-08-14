@@ -40,7 +40,7 @@ socketio = SocketIO(app)
 motorController = motor.MotorController()
 FORWARD_SPEED = 20
 PIVOT_SPEED = 20
-# 3 motor labels: 1 is left pivot, 2 is forward, 3 is right pivot
+# 3 motor labels: 0 is left pivot, 1 is forward, 2 is right pivot
 directionID = 1
 
 # camera setup
@@ -78,6 +78,7 @@ recordingStarted = False
 @socketio.on('recordingSystem') 
 def recording_system():
     global recordingStarted
+    global directionID
     if not recordingStarted:
         recordingStarted = True
         framesTaken = 0
@@ -112,11 +113,11 @@ def disconnect():
 def set_direction(data):
     global directionIDd
     directionID = data
-    if directionID == 1:
+    if directionID == 0:
         motorController.left_pivot(PIVOT_SPEED)
-    elif directionID == 2:
+    elif directionID == 1:
         motorController.forward(FORWARD_SPEED)
-    elif directionID == 3:
+    elif directionID == 2:
         motorController.right_pivot(PIVOT_SPEED)
     
 
