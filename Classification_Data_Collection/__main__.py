@@ -38,8 +38,8 @@ socketio = SocketIO(app)
 
 #nmotor setup
 motorController = motor.MotorController()
-FORWARD_SPEED = 30
-PIVOT_SPEED = 30
+FORWARD_SPEED = 45
+PIVOT_SPEED = 15
 # 3 motor labels: 0 is left pivot, 1 is forward, 2 is right pivot
 directionID = 1
 
