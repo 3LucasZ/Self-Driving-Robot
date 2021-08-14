@@ -18,8 +18,9 @@ class TfliteModel():
             print(self.output_details)
 
     def predict(self, image):
+        #cropping?
         #frame shape should be: (1, 32, 64, 3)
-        image = image[0:32, :, :]
+        #image = image[0:32, :, :]
         processedImage = np.expand_dims(np.float32((image / 255)), axis=0)
         self.interpreter.set_tensor(self.input_details[0]['index'], processedImage)
         self.interpreter.invoke()
