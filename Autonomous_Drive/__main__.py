@@ -102,21 +102,20 @@ def livestream_system():
             frame, encodedFrame = camera.take_picture()
             if canInference: 
                 if mode == 'regression':
-                    motorBias = model.predict(frame)
-                    motorController.set_to(left=MOTOR_DEFAULT+motorBias, right=MOTOR_DEFAULT-motorBias)
+                    prediction = model.predict(frame)
+                    motorController.set_to(left=MOTOR_DEFAULT+prediction, right=MOTOR_DEFAULT-prediction)
                 elif mode == 'classification':
-                    directionID = model.predict(frame)
-                    if directionID == 1:
+                    prediction = model.predict(frame)
+                    if prediction == 1:
                         motorController.left_pivot(PIVOT_SPEED)
-                    elif directionID == 2:
+                    elif prediction == 2:
                         motorController.forward(FORWARD_SPEED)
-                    elif directionID == 3:
+                    elif prediction == 3:
                         motorController.right_pivot(PIVOT_SPEED)
                 else:
                     print("Error")
-                emit("directionID", directionID)
-
-            emit('jpg_string', encodedFrame)
+                socketio.emit("prediction", prediction)
+            socketio.emit('jpg_string', encodedFrame)
             #async sleep
             socketio.sleep(1/FPS)    
 
