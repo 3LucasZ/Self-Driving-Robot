@@ -42,8 +42,8 @@ if mode == 'regression':
     MOTOR_DEFAULT = 20
     motorBias = 0
 elif mode == 'classification':
-    FORWARD_SPEED = 20
-    PIVOT_SPEED = 20
+    FORWARD_SPEED = 45
+    PIVOT_SPEED = 45
 else:
     print("Error")
 
