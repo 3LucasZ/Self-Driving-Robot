@@ -19,6 +19,7 @@ import Modules.motor_controller as motor
 
 #ML model inference
 import Modules.inference as inference
+import numpy as np
 
 
 #General purpose 
@@ -27,11 +28,10 @@ import time
 
 
 #SETUP
-
-
 #tflite model
 modelName = 'model17.tflite'
 model = inference.TfliteModel(modelName)
+mode = 'classification'
 
 
 #camera
@@ -43,8 +43,12 @@ canInference = False
 
 #motors
 motorController = motor.MotorController()
-MOTOR_DEFAULT = 20
-motorBias = 0
+if mode == 'regression':
+    MOTOR_DEFAULT = 20
+    motorBias = 0
+elif mode == 'classification':
+    FORWARD_SPEED = 20
+    PIVOT_SPEED = 20
 
 
 #app
@@ -86,14 +90,30 @@ def stop_inference():
     canInference = False
 
 
+livestreamRunning = False
 @socketio.on('livestreamSystem')
 def livestream_system():
-    while True:
-        frame, encodedFrame = camera.take_picture()
-        if canInference:
-            motorBias = model.predict(frame)
-            motorController.set_to(left=MOTOR_DEFAULT+motorBias, right=MOTOR_DEFAULT-motorBias)
-            emit("bias", motorBias)
+    global livestreamRunning
+    if not livestreamRunning :
+        livestreamRunning = True
+        while True:
+            frame, encodedFrame = camera.take_picture()
+            if canInference:
+                #frame shape should be: (1, 32, 64, 3)
+                frame = frame[1, 0:32, :, :]
+                if mode == 'regression':
+                    motorBias = model.predict(frame)
+                    motorController.set_to(left=MOTOR_DEFAULT+motorBias, right=MOTOR_DEFAULT-motorBias)
+                    soemit("bias", motorBias)
+                if mode == 'classification:'
+                    directionID = np.argmax(model.predict(frame))
+                    if directionID == 1:
+                        motorController.left_pivot(PIVOT_SPEED)
+                    elif directionID == 2:
+                        motorController.forward(FORWARD_SPEED)
+                    elif directionID == 3:
+                        motorController.right_pivot(PIVOT_SPEED)
+
         socketio.emit('jpg_string', encodedFrame)
         #async sleep
         socketio.sleep(1/FPS)    
