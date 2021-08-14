@@ -64,3 +64,5 @@ while True:
     else:
         print("Error")
     time.sleep(1/FPS)
+
+motorController.stop()
