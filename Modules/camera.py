@@ -34,8 +34,8 @@ class Camera:
         if on_pi:
             #flip the image horiz and vert
             frame = cv2.flip(frame, -1)
-        #crop the image to 16 x 64
-        frame = frame[48:, :]
+        #optional crop the image to 16 x 64
+        #frame = frame[48:, :]
         #encode frame to jpg
         retval, encodedFrame = cv2.imencode('.jpg', frame)
         #encode to base 64 string
