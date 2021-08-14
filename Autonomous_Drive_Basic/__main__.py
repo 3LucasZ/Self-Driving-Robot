@@ -24,7 +24,7 @@ import time
 
 #SETUP
 #tflite model
-modelName = 'ClassDotted.tflite'
+modelName = 'ClassDotted2.tflite'
 mode = 'classification'
 model = inference.TfliteModel(modelName, mode)
 
