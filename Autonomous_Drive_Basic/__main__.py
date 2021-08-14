@@ -52,9 +52,11 @@ while True:
 
     if mode == 'regression':
         prediction = model.predict(frame)
+        print(prediction)
         motorController.set_to(left=MOTOR_DEFAULT+prediction, right=MOTOR_DEFAULT-prediction)
     elif mode == 'classification':
         prediction = model.predict(frame)
+        print(prediction)
         if prediction == 1:
             motorController.left_pivot(PIVOT_SPEED)
         elif prediction == 2:
