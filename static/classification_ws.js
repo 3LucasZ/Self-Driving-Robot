@@ -37,6 +37,10 @@ function turnRight(){
     direction = 2;
     directionUpdate(direction);
 }
+function noLine(){
+    direction = 3;
+    directionUpdate(direction);
+}
 function directionUpdate(direction) {
     socket.emit('direction', direction);
     directionDisplay.innerText = direction

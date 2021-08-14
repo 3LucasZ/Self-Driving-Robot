@@ -120,6 +120,8 @@ def set_direction(data):
         motorController.forward(FORWARD_SPEED)
     elif directionID == 2:
         motorController.right_pivot(PIVOT_SPEED)
+    elif directionID == 3:
+        motorController.forward(FORWARD_SPEED)
     
 
 #FLASK SERVING
