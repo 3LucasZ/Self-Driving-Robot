@@ -112,7 +112,7 @@ def disconnect():
 
 @socketio.on('direction')
 def set_direction(data):
-    global directionIDd
+    global directionID
     directionID = data
     if directionID == 0:
         motorController.left_pivot(PIVOT_SPEED)
