@@ -29,7 +29,7 @@ import time
 
 #SETUP
 #tflite model
-modelName = 'model17.tflite'
+modelName = 'ClassTrackLeftRight.tflite'
 model = inference.TfliteModel(modelName)
 mode = 'classification'
 
