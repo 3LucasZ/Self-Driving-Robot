@@ -106,7 +106,6 @@ def livestream_system():
                 if mode == 'regression':
                     motorBias = model.predict(frame)
                     motorController.set_to(left=MOTOR_DEFAULT+motorBias, right=MOTOR_DEFAULT-motorBias)
-                    soemit("bias", motorBias)
                 elif mode == 'classification':
                     directionID = np.argmax(model.predict(frame))
                     if directionID == 1:
@@ -117,10 +116,11 @@ def livestream_system():
                         motorController.right_pivot(PIVOT_SPEED)
                 else:
                     print("Error")
+                emit("directionID", directionID)
 
-        socketio.emit('jpg_string', encodedFrame)
-        #async sleep
-        socketio.sleep(1/FPS)    
+            emit('jpg_string', encodedFrame)
+            #async sleep
+            socketio.sleep(1/FPS)    
 
 
 #FLASK HTTP
