@@ -11,7 +11,7 @@ class Camera:
         self.camera = cv2.VideoCapture(0)
 
         #changing these might break the camera!!
-        self.camera.set(3, config['CAMERA']['WIDTH']])
+        self.camera.set(3, config['CAMERA']['WIDTH'])
         self.camera.set(4, config['CAMERA']['HEIGHT'])
 
         #get camera info and print it
