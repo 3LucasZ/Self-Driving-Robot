@@ -30,8 +30,8 @@ import time
 #SETUP
 #tflite model
 modelName = 'ClassTrackLeftRight.tflite'
-model = inference.TfliteModel(modelName, mode)
 mode = 'classification'
+model = inference.TfliteModel(modelName, mode)
 
 
 #camera
